@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.header-date::before {
+  content: "";
+  display: inline-block;
+  height: 2px;
+  width: 135px;
+  color: white;
+  border-left: 2px solid white;
+}
+
+@media screen and (max-width: 1280px) {
+  .header-date::before {
+    display: none;
+  }
+}
+@media screen and (min-width: 600px) and( max-width: 900px) {
+  .header-date::before {
+    display: inline-block;
+    /* width: 50px; */
+  }
+}
