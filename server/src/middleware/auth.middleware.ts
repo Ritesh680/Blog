@@ -4,6 +4,8 @@ import ApiResponse from "./response";
 import jwt from "jsonwebtoken";
 import { decodeToken, getToken } from "../utils/functions";
 
+
+
 class AuthMiddleware {
   config = Config(process.env.NODE_ENV);
 
@@ -22,6 +24,8 @@ class AuthMiddleware {
 
     next();
   }
+
+  
 }
 
 const authMiddleware = new AuthMiddleware();

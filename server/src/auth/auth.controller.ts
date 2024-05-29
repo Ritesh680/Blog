@@ -20,6 +20,24 @@ class AuthController {
       );
     new ApiResponse(res).failed("Invalid email or password");
   }
+
+  async logout(req: Request, res: Response) {
+    const token = req.headers.authorization?.split(" ")[1];
+    if(!token) return new ApiResponse(res).failed("No token provided", 400);
+    await authService.logoutUser(token);
+    new ApiResponse(res).success({}, "Logged out successfully", 200);
+  }
+
+  async getAllUsers(req: Request, res: Response) {
+    const data = await authService.getAllUsers();
+    new ApiResponse(res).success(data, "All users", 200);
+  }
+
+  async me(req: Request, res: Response) {
+    const token = req.headers.authorization?.split(" ")[1]!;
+    const data = await authService.getUserData(token);
+    new ApiResponse(res).success(data, "User data", 200);
+  }
 }
 
 const authController = new AuthController();
