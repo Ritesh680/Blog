@@ -5,34 +5,32 @@ import { bodyValidator } from "../middleware/zod.validator";
 import articleDTO from "./dto/article.dto";
 const router = express.Router();
 
-router.get(
-  "/",
-  authMiddleware.checkAuthenticated,
-  articleController.getAllArticles,
-);
-router.get(
-  "/:id",
-  authMiddleware.checkAuthenticated,
-  articleController.getArticleById,
-);
+router.get("/", articleController.getAllArticles);
+router.get("/:id", articleController.getArticleById);
 
 router.put(
-  "/:id",
-  authMiddleware.checkAuthenticated,
-  bodyValidator(articleDTO),
-  articleController.updateArticle,
+	"/:id",
+	authMiddleware.checkAuthenticated,
+	bodyValidator(articleDTO),
+	articleController.updateArticle
 );
 router.delete(
-  "/:id",
-  authMiddleware.checkAuthenticated,
-  articleController.deleteArticle,
+	"/:id",
+	authMiddleware.checkAuthenticated,
+	articleController.deleteArticle
 );
 
 router.post(
-  "/",
-  authMiddleware.checkAuthenticated,
-  bodyValidator(articleDTO),
-  articleController.createArticle,
+	"/like",
+	authMiddleware.checkAuthenticated,
+	articleController.likeArticle
+);
+
+router.post(
+	"/",
+	authMiddleware.checkAuthenticated,
+	bodyValidator(articleDTO),
+	articleController.createArticle
 );
 
 module.exports = router;
