@@ -3,7 +3,7 @@ import db from "./db/connection";
 import cacheControl from "express-cache-controller";
 
 // your routes here
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import Config from "./config/config";
 const config = Config(process.env.NODE_ENV);
 
@@ -15,11 +15,15 @@ app.use(
 	})
 );
 
-const corsOptions = {
-	origin: ["https://blog-ritesh.netlify.app", "http://localhost:5173"],
+const corsOptions: CorsOptions = {
+	origin: ["https://blog-ritesh.netlify.app", "http://localhost:5173", "*"],
 	methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
 	allowedHeaders: ["Content-Type", "Authorization"],
 	credentials: true,
+	maxAge: 0,
+	preflightContinue: true,
+	optionsSuccessStatus: 204,
+	exposedHeaders: ["Authorization"],
 };
 app.use(express.json());
 app.use(cors(corsOptions));
