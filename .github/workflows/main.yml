@@ -17,9 +17,9 @@ jobs:
       with:
         node-version: 20.x
     - name: Install backend dependencies
-      run: cd backend && npm ci
+      run: cd server && npm ci
     - name: Run backend tests
-      run: cd backend && npm test
+      run: cd server && npm test
 
   frontend:
     needs: backend
@@ -32,8 +32,8 @@ jobs:
       with:
         node-version: 20.x
     - name: Install frontend dependencies
-      run: cd frontend && npm ci
+      run: cd client && npm ci
     - name: Run frontend tests
-      run: cd frontend && npm test
+      run: cd client && npm test
     - name: Build frontend
-      run: cd frontend && npm run build
+      run: cd client && npm run build
