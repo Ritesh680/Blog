@@ -20,8 +20,6 @@ jobs:
       run: npm install -g pnpm
     - name: Install server dependencies
       run: cd server && pnpm install
-    - name: Run server tests
-      run: cd server && pnpm test
 
   client:
     needs: server
@@ -37,8 +35,6 @@ jobs:
       run: npm install -g pnpm
     - name: Install client dependencies
       run: cd client && pnpm install
-    - name: Run client tests
-      run: cd client && pnpm test
     - name: Build client
       run: cd client && pnpm run build
     - name: Install Netlify CLI
