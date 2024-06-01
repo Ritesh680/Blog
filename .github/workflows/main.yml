@@ -20,7 +20,8 @@ jobs:
       run: npm install -g pnpm
     - name: Install server dependencies
       run: cd server && pnpm install
-
+    - name: Run server tests
+      run: cd server && pnpm test
 
   client:
     needs: server
@@ -36,13 +37,11 @@ jobs:
       run: npm install -g pnpm
     - name: Install client dependencies
       run: cd client && pnpm install
+    - name: Run client tests
+      run: cd client && pnpm test
     - name: Build client
       run: cd client && pnpm run build
-      
-    - name: Build and Deploy to Netlify
-      uses: netlify/actions/cli@master
-      env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      with:
-        args: deploy --dir=client/build --prod
+    - name: Install Netlify CLI
+      run: npm install -g netlify-cli
+    - name: Deploy to Netlify
+      run: netlify deploy --dir=client/build --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
