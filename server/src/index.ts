@@ -1,11 +1,19 @@
 import express, { Express } from "express";
 import db from "./db/connection";
+import cacheControl from "express-cache-controller";
+
+// your routes here
 import cors from "cors";
 import Config from "./config/config";
 const config = Config(process.env.NODE_ENV);
 
 const app: Express = express();
 const port = config.port || 3000;
+app.use(
+	cacheControl({
+		maxAge: 0,
+	})
+);
 
 const corsOptions = {
 	origin: ["https://blog-ritesh.netlify.app", "http://localhost:5173"],
