@@ -7,7 +7,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  backend:
+  server:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,13 +16,15 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 20.x
-    - name: Install backend dependencies
-      run: cd server && npm ci
-    - name: Run backend tests
-      run: cd server && npm test
+    - name: Install pnpm
+      run: npm install -g pnpm
+    - name: Install server dependencies
+      run: cd server && pnpm install
+    - name: Run server tests
+      run: cd server && pnpm test
 
-  frontend:
-    needs: backend
+  client:
+    needs: server
     runs-on: ubuntu-latest
 
     steps:
@@ -31,9 +33,11 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 20.x
-    - name: Install frontend dependencies
-      run: cd client && npm ci
-    - name: Run frontend tests
-      run: cd client && npm test
-    - name: Build frontend
-      run: cd client && npm run build
+    - name: Install pnpm
+      run: npm install -g pnpm
+    - name: Install client dependencies
+      run: cd client && pnpm install
+    - name: Run client tests
+      run: cd client && pnpm test
+    - name: Build client
+      run: cd client && pnpm run build
