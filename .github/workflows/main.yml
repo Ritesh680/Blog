@@ -20,6 +20,8 @@ jobs:
         run: npm install -g pnpm
       - name: Install server dependencies
         run: cd server && pnpm install
+      - name: Build server
+        run: cd server && pnpm run build
         env:
           PORT: ${{secrets.PORT}}
           MONGO_URL: ${{secrets.MONGO_URL}}
