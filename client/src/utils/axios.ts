@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
 import { createError } from "./function";
 const instance = axios.create({
-	baseURL: "http://localhost:4000",
+	baseURL: import.meta.env.VITE_API_URL,
 	timeout: 1000,
 	headers: {
 		"Content-Type": "application/json",
