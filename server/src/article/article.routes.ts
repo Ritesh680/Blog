@@ -3,6 +3,7 @@ import articleController from "./article.controller";
 import authMiddleware from "../middleware/auth.middleware";
 import { bodyValidator } from "../middleware/zod.validator";
 import articleDTO from "./dto/article.dto";
+import fileUpload from "../utils/multer";
 const router = express.Router();
 
 router.get("/", articleController.getAllArticles);
