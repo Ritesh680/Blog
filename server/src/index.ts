@@ -8,8 +8,9 @@ const app: Express = express();
 const port = config.port || 3000;
 
 const corsOptions = {
-	origin: "*",
+	origin: ["https://blog-ritesh.netlify.app", "http://localhost:5173"],
 	methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+	credentials: true,
 };
 app.use(express.json());
 app.use(cors(corsOptions));
