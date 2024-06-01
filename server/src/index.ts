@@ -1,12 +1,11 @@
 import express, { Express } from "express";
-import dotenv from "dotenv";
 import db from "./db/connection";
 import cors from "cors";
-
-dotenv.config();
+import Config from "./config/config";
+const config = Config(process.env.NODE_ENV);
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = config.port || 3000;
 
 const corsOptions = {
 	origin: "*",
