@@ -16,12 +16,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 20.x
+      - name: Change to project directory
+        run: cd server
       - name: Install pnpm
         run: npm install -g pnpm
       - name: Install server dependencies
-        run: cd server && pnpm install
+        run: pnpm install
       - name: Build server
-        run: cd server && pnpm run build
+        run: pnpm run build
         env:
           PORT: ${{secrets.PORT}}
           MONGO_URL: ${{secrets.MONGO_URL}}
