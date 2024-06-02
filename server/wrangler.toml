@@ -1,0 +1,6 @@
+name = "blog-server"
+type = "webpack"
+account_id = "4c56d734ab8a0f07ce8ebd3cf8404506"
+workers_dev = true
+route = "riteshpaudel679.com.np/*"
+zone_id = ""
