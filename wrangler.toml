@@ -7,5 +7,5 @@ zone_id = ""
 compatibility_date = "2024-06-02"
 
 [env.production]
-name = "blog-server"
+name = "blog"
 route = "riteshpaudel679.com.np"
