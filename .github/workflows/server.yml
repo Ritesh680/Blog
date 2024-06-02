@@ -39,5 +39,3 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: "production"
-      - name: Deploy to Netlify
-        run: netlify deploy --dir=server/dist --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_BE_SITE_ID }}
