@@ -1,0 +1,32 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.x
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install client dependencies
+        run: cd client && pnpm install
+      - name: Build client
+        run: cd client && pnpm run build
+        env:
+          VITE_API_URL: ${{secrets.VITE_API_URL}}
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+      - name: List client directory contents
+        run: ls -l client
+      - name: Deploy to Netlify
+        run: netlify deploy --dir=client/dist --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
