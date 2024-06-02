@@ -6,6 +6,6 @@ route = "riteshpaudel679.com.np/*"
 zone_id = ""
 compatibility_date = "2024-06-02"
 
-[.env.production]
+[env.production]
 name = "blog-server"
 route = "riteshpaudel679.com.np"
