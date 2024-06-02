@@ -29,6 +29,9 @@ dependencies:
   multer:
     specifier: 1.4.5-lts.1
     version: 1.4.5-lts.1
+  serverless-http:
+    specifier: ^3.2.0
+    version: 3.2.0
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
@@ -1459,6 +1462,11 @@ packages:
       send: 0.18.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /serverless-http@3.2.0:
+    resolution: {integrity: sha512-QvSyZXljRLIGqwcJ4xsKJXwkZnAVkse1OajepxfjkBXV0BMvRS5R546Z4kCBI8IygDzkQY0foNPC/rnipaE9pQ==}
+    engines: {node: '>=12.0'}
     dev: false
 
   /set-blocking@2.0.0:
