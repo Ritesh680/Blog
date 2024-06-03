@@ -82,7 +82,10 @@ const TabAbout = () => {
 			{/* avatar */}
 			<div className="mb-5">
 				<Avatar className="w-40 h-40">
-					<AvatarImage src="" alt="@shadcn" />
+					<AvatarImage
+						src={`${import.meta.env.VITE_API_URL}/${user.data?.imagePath?.[0]}`}
+						alt="@shadcn"
+					/>
 					<AvatarFallback className="text-7xl">
 						{user.data?.username.slice(0, 2)}
 					</AvatarFallback>
@@ -118,7 +121,9 @@ const TabAbout = () => {
 
 			{/* about */}
 			{user?.data?.about && (
-				<div className="text-muted-foreground">{user.data?.about || <></>}</div>
+				<div className="text-muted-foreground">
+					{user.data?.description || <></>}
+				</div>
 			)}
 
 			{/* followers and following */}

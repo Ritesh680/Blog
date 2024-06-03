@@ -53,7 +53,12 @@ const Navbar = () => {
 							<DropdownMenu>
 								<DropdownMenuTrigger>
 									<Avatar>
-										<AvatarImage src={``} alt="@shadcn" />
+										<AvatarImage
+											src={`${import.meta.env.VITE_API_URL}/${
+												userProfile.imagePath?.[0]
+											}`}
+											alt="@shadcn"
+										/>
 										<AvatarFallback>
 											{userProfile?.username?.slice(0, 2)}
 										</AvatarFallback>

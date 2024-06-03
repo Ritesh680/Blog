@@ -33,7 +33,12 @@ class UserService {
 		const res = await axiosInstance<ApiResponse<IUser>>(
 			"put",
 			`/users/${id}`,
-			data
+			data,
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			}
 		);
 		if (res instanceof Error) throw Error("Something went wrong");
 		return res.data;

@@ -13,4 +13,8 @@ router.use("/comments", require("./comment/comment.routes"));
 router.use("/users", require("./users/user.routes"));
 router.use("/tags", require("./tags/tags.route"));
 
+router.get("/uploads/:path", (req, res) => {
+	res.sendFile(req.params.path, { root: "uploads" });
+});
+
 module.exports = router;

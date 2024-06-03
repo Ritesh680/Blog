@@ -13,7 +13,8 @@ declare global {
 		followers: IUser[];
 		following: IUser[];
 		articles: IArticle[];
-		image?: File;
+		imagePath?: string[];
+		files?: File;
 	}
 
 	interface IArticle {

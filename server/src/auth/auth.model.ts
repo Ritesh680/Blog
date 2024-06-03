@@ -8,6 +8,7 @@ export interface UserDocument extends Document {
 	followers: string[];
 	following: string[];
 	registration_date: Date;
+	imagePath: string;
 }
 
 const userSchema = new Schema<UserDocument>({
@@ -17,6 +18,7 @@ const userSchema = new Schema<UserDocument>({
 	followers: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
 	following: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
 	registration_date: { type: Date, default: Date.now() },
+	imagePath: [{ type: String, default: "" }],
 });
 
 userSchema.pre<UserDocument>("save", async function (next) {

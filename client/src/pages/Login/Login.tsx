@@ -38,7 +38,7 @@ const Login = () => {
 		mutationFn: (data: Login) => authService.login(data),
 		onSuccess: (res) => {
 			navigate("/dashboard");
-			localStorage.setItem("token", res.data.token);
+			localStorage.setItem("token", res.data.data.token);
 			setIsAuthenticated(true);
 		},
 		onError: (error: { message: string }) => {

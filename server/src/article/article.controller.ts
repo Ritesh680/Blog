@@ -23,7 +23,6 @@ class ArticleController {
 
 	async getAllArticles(req: Request, res: Response, next: NextFunction) {
 		const response = await articleService.getAllArticles();
-		console.log({ response });
 		new ApiResponse(res).success(response, "ALl articles", 200);
 	}
 

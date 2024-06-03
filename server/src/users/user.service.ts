@@ -48,6 +48,8 @@ class UserService {
 					articles: 1,
 					followers: 1,
 					following: 1,
+					imagePath: 1,
+					description: 1,
 				},
 			},
 		]);
@@ -55,7 +57,6 @@ class UserService {
 	}
 
 	async followUser(currentUserId: string, followUserId: string) {
-		console.log({ user: this.user.findById(followUserId) });
 		const res = await this.user.findByIdAndUpdate(
 			followUserId,
 			{ $push: { followers: currentUserId } },
@@ -116,6 +117,13 @@ class UserService {
 			},
 		]);
 		return following.map((user) => user.following).flat();
+	}
+
+	async updateUser(userId: string, data: Record<string, string>) {
+		const updatedUser = await this.user.findByIdAndUpdate(userId, data, {
+			new: true,
+		});
+		return updatedUser;
 	}
 }
 

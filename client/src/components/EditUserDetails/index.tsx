@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
 
@@ -7,6 +7,7 @@ import { UserContext } from "@/context/user.context";
 import userService from "@/service/user.service";
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
@@ -17,10 +18,16 @@ import {
 import { Label } from "../Label";
 import { Input } from "../Input";
 import { Button } from "../Button";
+import InfiniteLoader from "../InfiniteLoader";
 
 const EditUserDetails = () => {
 	const queryClient = useQueryClient();
-	const { userProfile } = useContext(UserContext);
+	const { userProfile, fetchProfile } = useContext(UserContext);
+	const dialogCloseRef = useRef<HTMLButtonElement>(null);
+
+	function closeDialog() {
+		dialogCloseRef.current?.click();
+	}
 
 	const { register, handleSubmit, setValue } = useForm<IUser>();
 
@@ -28,19 +35,27 @@ const EditUserDetails = () => {
 		const value = e.target.files![0];
 
 		if (value) {
-			setValue("image", value);
+			setValue("files", value);
 		}
 
 		// Validate file type for the 'picture' input
 	};
 
-	const { mutate } = useMutation({
+	const { mutate, isLoading } = useMutation({
 		mutationFn: (data: IUser) => userService.updateUser(userProfile._id, data),
 
 		onSettled: () => {
 			queryClient.refetchQueries({
 				queryKey: [QueryKeys.Users, userProfile._id],
 			});
+		},
+		onSuccess: () => {
+			queryClient.refetchQueries({
+				queryKey: [QueryKeys.Users, userProfile._id],
+			});
+			queryClient.invalidateQueries(QueryKeys.Users);
+			fetchProfile();
+			closeDialog();
 		},
 	});
 
@@ -100,8 +115,11 @@ const EditUserDetails = () => {
 					</div>
 				</div>
 				<DialogFooter>
-					<Button onClick={handleSubmit(onSubmit)}>Save changes</Button>
+					<Button onClick={handleSubmit(onSubmit)}>
+						{isLoading == false ? <InfiniteLoader /> : "Save changes"}
+					</Button>
 				</DialogFooter>
+				<DialogClose ref={dialogCloseRef} />
 			</DialogContent>
 		</Dialog>
 	);
