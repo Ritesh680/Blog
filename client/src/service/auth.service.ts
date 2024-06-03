@@ -1,14 +1,14 @@
 import axiosInstance from "@/utils/axios";
 
 interface IR {
-	token: string;
+	data: { token: string };
 }
 
 class AuthService {
 	async login(data: {
 		email: string;
 		password: string;
-	}): Promise<ApiResponse<{ token: string }>> {
+	}): Promise<ApiResponse<IR>> {
 		const response = await axiosInstance<ApiResponse<IR>>(
 			"post",
 			"/auth/login",
@@ -26,7 +26,10 @@ class AuthService {
 	}
 
 	async getProfileData() {
-		const response = await axiosInstance<ApiResponse<IUser>>("get", "/auth/me");
+		const response = await axiosInstance<ApiResponse<IUser[]>>(
+			"get",
+			"/auth/me"
+		);
 		if (response instanceof Error) {
 			throw Error("Something went wrong");
 		}

@@ -43,14 +43,11 @@ const SearchBar = () => {
 	// 			const response = await instance.get(`/search/${searchInput}`, {
 	// 				cancelToken: cancelToken.token,
 	// 			});
-	// 			console.log(response.data);
 	// 			setResponse(response.data);
 	// 			// Handle the response data as needed
 	// 		} catch (error) {
 	// 			if (axios.isCancel(error)) {
-	// 				console.log("Request cancelled", error.message);
 	// 			} else {
-	// 				console.log("Error", error.message);
 	// 			}
 	// 		}
 	// 	};

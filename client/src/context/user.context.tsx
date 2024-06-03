@@ -11,6 +11,7 @@ interface UserContextProps {
 	setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 	userProfile: Record<string, string>;
 	setUserProfile: React.Dispatch<React.SetStateAction<string>>;
+	fetchProfile: () => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -18,6 +19,7 @@ export const UserContext = createContext<UserContextProps>({
 	setIsAuthenticated: () => {},
 	userProfile: {},
 	setUserProfile: () => {},
+	fetchProfile: async () => {},
 });
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
@@ -29,7 +31,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
 	async function fetchProfile() {
 		const profile = await authService.getProfileData();
 
-		setUserProfile(profile);
+		setUserProfile(profile[0]);
 	}
 
 	useEffect(() => {
@@ -45,6 +47,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
 				setIsAuthenticated,
 				userProfile,
 				setUserProfile,
+				fetchProfile,
 			}}>
 			{children}
 		</UserContext.Provider>

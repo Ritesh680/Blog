@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
-import { createError } from "./function";
+import { createError, objectToFormData } from "./function";
 const instance = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
 	timeout: 1000,
@@ -13,6 +13,10 @@ const token = localStorage.getItem("token");
 instance.interceptors.request.use((config) => {
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
+		if (config.headers["Content-Type"] === "multipart/form-data") {
+			config.data = objectToFormData(config.data);
+		}
+		return config;
 	}
 	return config;
 });
@@ -20,7 +24,7 @@ instance.interceptors.request.use((config) => {
 const getApiConfig = async (config?: AxiosRequestConfig) => {
 	return {
 		...config,
-		headers: { Authorization: `Bearer ${token}` },
+		headers: { ...config?.headers, Authorization: `Bearer ${token}` },
 	};
 };
 
@@ -32,6 +36,7 @@ async function axiosInstance<T>(
 ): Promise<T | Error> {
 	const apiConfig = await getApiConfig(config);
 	let res;
+
 	try {
 		res = await instance.request({
 			method,

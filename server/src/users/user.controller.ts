@@ -12,7 +12,6 @@ class UserController {
 		const token = req.headers.authorization?.split(" ")[1]!;
 		const userId = (await decodeToken(token)).userId;
 		const data = await userService.getUserDetails(userId);
-		console.log({ data });
 		new ApiResponse(res).success(data, "User details fetched successfully");
 	}
 
@@ -57,6 +56,23 @@ class UserController {
 		if (!userId) new ApiResponse(res).failed("User id is required", 400);
 		const data = await userService.getUserFollowing(userId);
 		new ApiResponse(res).success(data, "User following fetched successfully");
+	}
+
+	async updateUser(req: Request, res: Response) {
+		const userId = req.params.id;
+		const data = req.body;
+		const files = req.files;
+
+		const filePath = files
+			? Array.isArray(files)
+				? files?.map((file: { path: string }) => file.path)
+				: files.path
+			: "";
+		if (filePath) {
+			data.imagePath = filePath;
+		}
+		const updatedUser = await userService.updateUser(userId, data);
+		new ApiResponse(res).success(updatedUser, "User updated successfully");
 	}
 }
 

@@ -137,7 +137,6 @@ const BlogDetailPage = () => {
 	// 	onMutate: () => {
 	// 		// Optimistically update the local cache
 	// 		queryClient.setQueryData(["following", id], (prev) => {
-	// 			console.log(prev);
 	// 			if (prev) {
 	// 				return {
 	// 					...prev,
@@ -170,7 +169,6 @@ const BlogDetailPage = () => {
 	// 	onMutate: () => {
 	// 		// Optimistically update the local cache
 	// 		queryClient.setQueryData(["following", id], (prev) => {
-	// 			console.log(prev);
 	// 			if (prev) {
 	// 				return {
 	// 					...prev,
