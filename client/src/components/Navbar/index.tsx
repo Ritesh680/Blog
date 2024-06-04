@@ -32,13 +32,13 @@ const Navbar = () => {
 
 	return (
 		<>
-			{isAuthenticated ? (
+			{isAuthenticated && userProfile ? (
 				<div className="h-[57px]  flex items-center  justify-between  px-10 sticky top-0 bg-black/10 backdrop-blur-sm z-20">
 					<div className="flex items-center gap-5">
 						<Link
 							className="text-3xl font-semibold tracking-wide cursor-pointer"
 							to="/">
-							BlogBreeze
+							Ritesh
 						</Link>
 						<div className="hidden cursor-text sm:block">
 							<SearchBar />
@@ -48,14 +48,14 @@ const Navbar = () => {
 					<div className="flex flex-row items-center gap-8">
 						<div className="flex items-center gap-3">
 							<div className="hidden text-sm sm:block">
-								{userProfile.username}
+								{userProfile?.username}
 							</div>
 							<DropdownMenu>
 								<DropdownMenuTrigger>
 									<Avatar>
 										<AvatarImage
 											src={`${import.meta.env.VITE_API_URL}/${
-												userProfile.imagePath?.[0]
+												userProfile?.imagePath?.[0]
 											}`}
 											alt="@shadcn"
 										/>
@@ -73,7 +73,7 @@ const Navbar = () => {
 									</Link>
 
 									{/* <DropdownMenuSeparator /> */}
-									<Link to={`/users/${userProfile._id}`}>
+									<Link to={`/users/${userProfile?._id}`}>
 										<DropdownMenuItem className="flex items-center text-xl">
 											<UserOutlined className="w-4 h-4 mr-3" />
 											Profile

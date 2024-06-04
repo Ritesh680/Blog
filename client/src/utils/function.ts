@@ -50,3 +50,9 @@ export const objectToFormData = (
 
 	return formData;
 };
+
+export async function createFileFromUrl(url: string, filename: string) {
+	return fetch(url)
+		.then((res) => res.blob())
+		.then((blob) => new File([blob], filename));
+}

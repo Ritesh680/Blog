@@ -26,7 +26,7 @@ interface Login {
 const Login = () => {
 	const [apiError, setApiError] = useState<string>();
 	const navigate = useNavigate();
-	const { setIsAuthenticated } = useContext(UserContext);
+	const { setIsAuthenticated, fetchProfile } = useContext(UserContext);
 
 	const {
 		register,
@@ -39,6 +39,8 @@ const Login = () => {
 		onSuccess: (res) => {
 			navigate("/dashboard");
 			localStorage.setItem("token", res.data.data.token);
+
+			fetchProfile();
 			setIsAuthenticated(true);
 		},
 		onError: (error: { message: string }) => {

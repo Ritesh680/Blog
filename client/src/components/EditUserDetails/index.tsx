@@ -60,7 +60,6 @@ const EditUserDetails = () => {
 	});
 
 	const onSubmit = (data: IUser) => {
-		// console.log(formData);
 		mutate(data);
 	};
 	return (

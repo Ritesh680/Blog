@@ -81,7 +81,7 @@
 }
 
 .main:before {
-	background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
+	/* background: radial-gradient(circle, rgba(22, 10, 253, 0) 0, #faf0e9 100%); */
 	position: absolute;
 	content: "";
 	z-index: 2;
@@ -110,10 +110,10 @@
 	max-width: 640px;
 	background-image: radial-gradient(
 			at 27% 37%,
-			hsla(215, 98%, 61%, 1) 0px,
+			rgb(12, 67, 144) 0px,
 			transparent 0%
 		),
-		radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 50%),
+		radial-gradient(at 97% 21%, rgb(13, 95, 20) 0px, transparent 50%),
 		radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 1) 0px, transparent 50%),
 		radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 1) 0px, transparent 50%),
 		radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 1) 0px, transparent 50%),

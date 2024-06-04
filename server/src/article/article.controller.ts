@@ -11,11 +11,19 @@ class ArticleController {
 		const token = getToken(authHeader)!;
 		const decoded = await decodeToken(token);
 
+		const files = req.files as Express.Multer.File[] | Express.Multer.File;
+		const filesPath = files
+			? Array.isArray(files)
+				? files.map((file) => file.path)
+				: [files.path]
+			: [""];
+
 		const response = await articleService.createArticle({
 			authorId: decoded.userId,
 			categoryId,
 			content,
 			title,
+			filesPath: filesPath,
 		});
 
 		new ApiResponse(res).success(response, "article created", 201);
@@ -39,11 +47,19 @@ class ArticleController {
 		const decoded = await decodeToken(token);
 		const { categoryId, content, title } = req.body;
 
+		const files = req.files as Express.Multer.File[] | Express.Multer.File;
+		const filesPath = files
+			? Array.isArray(files)
+				? files.map((file) => file.path)
+				: [files.path]
+			: [""];
+
 		const response = await articleService.updateArticle(id, {
 			authorId: decoded.userId,
 			categoryId,
 			content,
 			title,
+			filesPath,
 		});
 
 		new ApiResponse(res).success(response, "ALl articles", 200);
@@ -67,6 +83,7 @@ class ArticleController {
 		);
 		new ApiResponse(res).success(response, "ALl articles", 200);
 	}
+	async addComment(req: Request, res: Response, next: NextFunction) {}
 }
 
 const articleController = new ArticleController();
