@@ -4,4 +4,6 @@ export const QueryKeys = {
 	Followers: "Followers",
 	Following: "Following",
 	Users: "Users",
+	Tags: "Tags",
+	Article: "Article",
 };

@@ -1,7 +1,8 @@
-import { Avatar, Badge } from "antd";
 import { MessageOutlined, HeartOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { SyntheticEvent } from "react";
+import { Badge } from "@/Badge";
+import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
 
 const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 	const {
@@ -10,13 +11,14 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 		user,
 		likes,
 		comments,
-		picture,
 		publicationDate,
 		_id,
 		tag,
+		filesPath,
 	} = data;
 
-	const [imageSrc, setImageSrc] = useState(picture);
+	console.log({ data });
+
 	// function to format date
 	return (
 		<div className="rounded bg-black/10">
@@ -24,8 +26,10 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 				{/* picture */}
 				<div className="mx-0 my-6 col-span-full lg:col-span-4 lg:order-1">
 					<img
-						src={`${imageSrc}`}
-						onError={() => setImageSrc("fallback.png")}
+						src={`${import.meta.env.VITE_API_URL}/${filesPath?.[0]}`}
+						onError={(e: SyntheticEvent<HTMLImageElement>) =>
+							(e.currentTarget.src = "fallback.png")
+						}
 						alt="Description of the image"
 						className="object-cover w-full h-full rounded"
 					/>
@@ -37,7 +41,7 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 					{tag && (
 						<div className="flex justify-start">
 							<span className="px-1 py-1 ">
-								<Badge>{tag.name}</Badge>
+								<Badge tagId={tag}>{tag}</Badge>
 							</span>
 						</div>
 					)}
@@ -65,11 +69,21 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 					{/* footer avatar */}
 					<div className="flex items-center justify-between pt-2">
 						<div className="flex items-center space-x-4">
-							<Avatar>{data?.user?.username.slice(0, 2)}</Avatar>
+							<Avatar>
+								<AvatarImage
+									src={`${import.meta.env.VITE_API_URL}/${
+										user?.[0]?.imagePath
+									}`}
+									alt="@shadcn"
+								/>
+								<AvatarFallback>
+									{data?.user?.[0]?.username?.slice(0, 2)}
+								</AvatarFallback>
+							</Avatar>
 							<div className="flex flex-col space-y-0.5">
-								<Link to={`/users/${data?.user?._id}`}>
+								<Link to={`/users/${data?.user?.[0]?._id}`}>
 									<span className="self-center text-sm cursor-pointer">
-										{user?.username}
+										{user?.[0].username}
 									</span>
 								</Link>
 								<span className="text-xs text-muted-foreground">

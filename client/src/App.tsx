@@ -11,6 +11,7 @@ import CheckAuthAndRender from "./components/CheckAuthAndRender";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import Register from "./pages/Register";
+import CreateorEdit_Blog from "./pages/CreateBlog";
 
 function App() {
 	return (
@@ -20,6 +21,8 @@ function App() {
 					<Route path="/" element={<Navigate to="/dashboard" />} />
 					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />
+					<Route path="create-blog" element={<CreateorEdit_Blog />} />
+					<Route path="edit-blog/:blogId" element={<CreateorEdit_Blog />} />
 					<Route path="dashboard" element={<HomePage />}>
 						<Route path="" element={<CheckAuthAndRender />} />,
 					</Route>

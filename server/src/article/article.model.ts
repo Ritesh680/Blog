@@ -1,9 +1,10 @@
-import mongoose, { Schema, mongo } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const ArticleSchema = new Schema({
 	title: String,
 	description: String,
 	content: String,
+	filesPath: [{ type: String, default: "" }],
 	tag: {
 		type: String,
 		enum: ["featured", "popular", "trending"],

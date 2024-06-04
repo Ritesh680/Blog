@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import Article from "./article.model";
 
 interface ICreateArticle {
@@ -6,6 +6,7 @@ interface ICreateArticle {
 	content: string;
 	authorId: string;
 	categoryId: string;
+	filesPath?: string[];
 }
 class ArticleService {
 	article = Article;
@@ -16,10 +17,44 @@ class ArticleService {
 	}
 
 	async getAllArticles() {
-		return await this.article?.find();
+		return await this.article?.aggregate([
+			{
+				$lookup: {
+					from: "users",
+					localField: "authorId",
+					foreignField: "_id",
+					as: "user",
+					pipeline: [{ $project: { _id: 1, username: 1, imagePath: 1 } }],
+				},
+			},
+		]);
 	}
 	async getArticleById(id: string) {
-		return await this.article.findById(id);
+		const res = await this.article.aggregate([
+			{
+				$match: {
+					_id: new mongoose.Types.ObjectId(id),
+				},
+			},
+			{
+				$lookup: {
+					from: "users",
+					localField: "authorId",
+					foreignField: "_id",
+					as: "user",
+					pipeline: [
+						{
+							$project: {
+								_id: 1,
+								username: 1,
+								imagePath: 1,
+							},
+						},
+					],
+				},
+			},
+		]);
+		return res[0];
 	}
 
 	async likeArticle(articleId: string, userId: string) {

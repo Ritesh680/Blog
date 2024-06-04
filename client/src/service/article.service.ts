@@ -25,7 +25,7 @@ class ArticleService {
 	async likeArticle(articleId: string) {
 		const response = await axiosInstance<ApiResponse<IArticle>>(
 			"post",
-			`article/like/${articleId}`
+			`/article/like/${articleId}`
 		);
 		if (response instanceof Error) {
 			throw new Error(response.message);
@@ -36,7 +36,39 @@ class ArticleService {
 	async deleteArticle(articleId: string) {
 		const response = await axiosInstance<ApiResponse<IArticle>>(
 			"delete",
-			`article/${articleId}`
+			`/article/${articleId}`
+		);
+		if (response instanceof Error) {
+			throw new Error(response.message);
+		}
+		return response.data;
+	}
+	async createArticle(data: ICreateArticle) {
+		const response = await axiosInstance<ApiResponse<ICreateArticle>>(
+			"post",
+			`/article`,
+			data,
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			}
+		);
+		if (response instanceof Error) {
+			throw new Error(response.message);
+		}
+		return response.data;
+	}
+	async updateArticle(blogId: string, data: ICreateArticle) {
+		const response = await axiosInstance<ApiResponse<ICreateArticle>>(
+			"put",
+			`/article/${blogId}`,
+			data,
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			}
 		);
 		if (response instanceof Error) {
 			throw new Error(response.message);
