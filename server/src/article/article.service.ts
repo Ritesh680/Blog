@@ -27,6 +27,15 @@ class ArticleService {
 					pipeline: [{ $project: { _id: 1, username: 1, imagePath: 1 } }],
 				},
 			},
+			{
+				$lookup: {
+					from: "tags",
+					localField: "tag",
+					foreignField: "_id",
+					as: "tag",
+				},
+			},
+			{ $unwind: "$tag" },
 		]);
 	}
 	async getArticleById(id: string) {
@@ -53,8 +62,40 @@ class ArticleService {
 					],
 				},
 			},
+			{
+				$lookup: {
+					from: "tags",
+					localField: "tag",
+					foreignField: "_id",
+					as: "tag",
+				},
+			},
+			{ $unwind: "$tag" },
+			{
+				$lookup: {
+					from: "comments",
+					localField: "_id",
+					foreignField: "articleId",
+					as: "comments",
+					pipeline: [
+						{
+							$lookup: {
+								from: "users",
+								localField: "userId",
+								foreignField: "_id",
+								as: "user",
+							},
+						},
+						{ $unwind: "$user" },
+					],
+				},
+			},
 		]);
 		return res[0];
+	}
+
+	async getArticlesByTagId(tagId: string) {
+		return await this.article.find({ categoryId: { $in: [tagId] } });
 	}
 
 	async likeArticle(articleId: string, userId: string) {
@@ -62,7 +103,19 @@ class ArticleService {
 		if (!article) {
 			throw new Error("Article not found");
 		}
-		const isLiked = article.likes.includes(userId as any);
+		return await this.article.findByIdAndUpdate(articleId, {
+			$addToSet: { likes: userId },
+		});
+	}
+
+	async unlikeArticle(articleId: string, userId: string) {
+		const article = await this.article.findById(articleId);
+		if (!article) {
+			throw new Error("Article not found");
+		}
+		return await this.article.findByIdAndUpdate(articleId, {
+			$pull: { likes: userId },
+		});
 	}
 
 	async updateArticle(id: string, body: ICreateArticle) {

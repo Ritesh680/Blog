@@ -6,4 +6,7 @@ export const QueryKeys = {
 	Users: "Users",
 	Tags: "Tags",
 	Article: "Article",
+	Blogs: "Blogs",
+	UserDetails: "UserDetails",
+	Comments: "Comments",
 };

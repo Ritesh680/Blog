@@ -5,10 +5,11 @@ export interface UserDocument extends Document {
 	username: string;
 	password: string;
 	email: string;
-	followers: string[];
-	following: string[];
+	followers: mongoose.Types.ObjectId[];
+	following: mongoose.Types.ObjectId[];
 	registration_date: Date;
 	imagePath: string;
+	tagsFollowing: mongoose.Types.ObjectId[];
 }
 
 const userSchema = new Schema<UserDocument>({
@@ -19,6 +20,7 @@ const userSchema = new Schema<UserDocument>({
 	following: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
 	registration_date: { type: Date, default: Date.now() },
 	imagePath: [{ type: String, default: "" }],
+	tagsFollowing: [{ type: Schema.Types.ObjectId, ref: "Tag", default: [] }],
 });
 
 userSchema.pre<UserDocument>("save", async function (next) {

@@ -96,14 +96,14 @@ const TabAbout = () => {
 				<div className="mb-3 text-3xl font-semibold">{user.data?.username}</div>
 
 				{/* follow unfollow button */}
-				{isAuthenticated && user.data?._id === userProfile._id && (
-					<EditUserDetails />
+				{isAuthenticated && user.data?._id === userProfile?._id && (
+					<EditUserDetails data={user.data} />
 				)}
 
 				{isAuthenticated &&
-					user.data?._id !== userProfile._id &&
+					user.data?._id !== userProfile?._id &&
 					(userFollowers?.data?.some(
-						(following) => following._id == userProfile._id
+						(following) => following._id == userProfile?._id
 					) ? (
 						<div
 							className="font-semibold text-green-600 cursor-pointer hover:underline"

@@ -7,6 +7,7 @@ const BlogList = ({ data }: { data: IArticle[] }) => {
 				No blogs found
 			</div>
 		);
+
 	return (
 		<div className="flex flex-wrap items-stretch h-[400px]">
 			{data?.map((data) => (

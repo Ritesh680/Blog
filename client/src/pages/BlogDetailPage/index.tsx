@@ -49,7 +49,7 @@ const BlogDetailPage = () => {
 	// fetching the following of the author
 	const following = useQuery({
 		queryKey: [QueryKeys.Following, userProfile?._id],
-		queryFn: () => userService.getUserFollowingById(userProfile?._id),
+		queryFn: () => userService.getUserFollowingById(userProfile?._id || ""),
 		enabled: !!userProfile?._id,
 	});
 
@@ -69,70 +69,53 @@ const BlogDetailPage = () => {
 	});
 
 	// mutation query for liking a blog
-	// const likeBlog = useMutation({
-	//   mutationFn: () => articleService.likeArticle(blogId!),
+	const likeBlog = useMutation({
+		mutationFn: () => articleService.likeArticle(blogId!),
 
-	// 	// onError: (error) => {
-	// 	// 	toast({
-	// 	// 		variant: "destructive",
-	// 	// 		title: error.response.data || error.message || "something went wrong",
-	// 	// 	});
-	// 	// },
+		onMutate: async () => {
+			// Optimistically update the local cache
+			queryClient.setQueryData([QueryKeys.Blogs, blogId], (prev) => {
+				if (prev) {
+					return {
+						...prev,
 
-	// 	onMutate: async () => {
-	// 		// Optimistically update the local cache
-	// 		queryClient.setQueryData(["blogs", blogId], (prev) => {
-	// 			if (prev) {
-	// 				return {
-	// 					...prev,
+						// Simulate adding a like optimistically
+						// likes: [...prev.likes, { _id: id }],
+					};
+				}
+				return prev;
+			});
+		},
 
-	// 					// Simulate adding a like optimistically
-	// 					likes: [...prev.likes, { _id: id }],
-	// 				};
-	// 			}
-	// 			return prev;
-	// 		});
-	// 	},
-
-	// 	onSettled: () => {
-	// 		queryClient.refetchQueries({
-	// 			queryKey: ["blogs", blogId],
-	// 		});
-	// 	},
-	// });
+		onSettled: () => {
+			queryClient.refetchQueries({
+				queryKey: ["blogs", blogId],
+			});
+		},
+	});
 
 	// mutation query for unliking a blog
-	// const unLikeBlog = useMutation({
-	// 	mutationFn: () =>
-	// 		instance.delete(`/blogs/${blogId}/unlike`, {
-	// 			headers: { Authorization: `Bearer ${token}` },
-	// 		}),
+	const unLikeBlog = useMutation({
+		mutationFn: () => articleService.unlikeArticle(blogId!),
 
-	// 	onError: () => {
-	// 		toast({
-	// 			variant: "destructive",
-	// 			title: error.response.data || error.message || "something went wrong",
-	// 		});
-	// 	},
+		onMutate: () => {
+			queryClient.setQueryData([QueryKeys.Blogs, blogId], (prev) => {
+				if (prev) {
+					return {
+						...prev,
+						// likes: prev.likes.filter((likeId) => likeId._id !== id),
+					};
+				}
+				return prev;
+			});
+		},
 
-	// 	onMutate: () => {
-	// 		queryClient.setQueryData(["blogs", blogId], (prev) => {
-	// 			if (prev) {
-	// 				return {
-	// 					...prev,
-	// 					likes: prev.likes.filter((likeId) => likeId._id !== id),
-	// 				};
-	// 			}
-	// 			return prev;
-	// 		});
-	// 	},
-
-	// 	onSettled: () => {
-	// 		queryClient.refetchQueries({
-	// 			queryKey: ["blogs", blogId],
-	// 		});
-	// 	},
-	// });
+		onSettled: () => {
+			queryClient.refetchQueries({
+				queryKey: ["blogs", blogId],
+			});
+		},
+	});
 
 	// mutation function to follow
 	// const followUser = useMutation({
@@ -209,15 +192,15 @@ const BlogDetailPage = () => {
 		deleteBlog.mutate();
 	};
 
-	// // handle like
-	// const handleLike = () => {
-	// 	if (isAuthenticated) likeBlog.mutate();
-	// };
+	// handle like
+	const handleLike = () => {
+		if (isAuthenticated) likeBlog.mutate();
+	};
 
-	// // handle unlike
-	// const handleUnlike = () => {
-	// 	if (isAuthenticated) unLikeBlog.mutate();
-	// };
+	// handle unlike
+	const handleUnlike = () => {
+		if (isAuthenticated) unLikeBlog.mutate();
+	};
 
 	// // handle follow user
 	// const handleFollow = () => {
@@ -254,8 +237,8 @@ const BlogDetailPage = () => {
 				<div className="w-[1000px] overflow-hidden  p-5">
 					{data?.tag && (
 						<div>
-							<Badge tagId={data.tag} className="mb-5">
-								{data.tag}
+							<Badge tagId={data.tag?._id} className="mb-5">
+								{data.tag?.name}
 							</Badge>
 						</div>
 					)}
@@ -355,17 +338,19 @@ const BlogDetailPage = () => {
 									<span>{data.comments.length}</span>
 								</button>
 
-								{data.likes.some((like) => like._id === userProfile._id) ? (
+								{data.likes.some((like) => like === userProfile?._id) ? (
 									<button
 										type="button"
-										className="flex items-center p-1 space-x-1.5">
-										<HeartFilled />
+										className="flex items-center p-1 space-x-1.5"
+										onClick={handleUnlike}>
+										<HeartFilled className="text-red-500" />
 										<span>{data.likes.length}</span>
 									</button>
 								) : (
 									<button
 										type="button"
-										className="flex items-center p-1 space-x-1.5 ">
+										className="flex items-center p-1 space-x-1.5 "
+										onClick={handleLike}>
 										<HeartOutlined />
 										<span>{data.likes.length}</span>
 									</button>
@@ -381,13 +366,13 @@ const BlogDetailPage = () => {
 									<span>{data.comments.length}</span>
 								</button>
 
-								{data.likes.some((like) => like._id === userProfile._id) ? (
+								{data.likes.some((like) => like === userProfile?._id) ? (
 									<button
 										type="button"
 										className="flex items-center p-1 space-x-1.5"
 										// onClick={handleUnlike}
 									>
-										<HeartFilled />
+										<HeartFilled style={{ color: "red" }} />
 										<span>{data.likes.length}</span>
 									</button>
 								) : (

@@ -2,10 +2,11 @@ import { useQuery } from "react-query";
 import articleService from "@/service/article.service";
 import BlogHorizontalCard from "@/components/BlogHorizontalCard";
 import BlogList from "@/components/BlogList";
+import { QueryKeys } from "@/constants/QueryKeys";
 
 const PublicHome = () => {
 	const { data, isLoading } = useQuery({
-		queryKey: ["blogs"],
+		queryKey: [QueryKeys.Blogs],
 		queryFn: articleService.getArticles,
 	});
 

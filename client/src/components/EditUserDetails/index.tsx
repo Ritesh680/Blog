@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
 
@@ -20,7 +20,7 @@ import { Input } from "../Input";
 import { Button } from "../Button";
 import InfiniteLoader from "../InfiniteLoader";
 
-const EditUserDetails = () => {
+const EditUserDetails = ({ data }: { data?: IUser }) => {
 	const queryClient = useQueryClient();
 	const { userProfile, fetchProfile } = useContext(UserContext);
 	const dialogCloseRef = useRef<HTMLButtonElement>(null);
@@ -29,7 +29,7 @@ const EditUserDetails = () => {
 		dialogCloseRef.current?.click();
 	}
 
-	const { register, handleSubmit, setValue } = useForm<IUser>();
+	const { register, handleSubmit, setValue, reset } = useForm<IUser>();
 
 	const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.files![0];
@@ -42,16 +42,17 @@ const EditUserDetails = () => {
 	};
 
 	const { mutate, isLoading } = useMutation({
-		mutationFn: (data: IUser) => userService.updateUser(userProfile._id, data),
+		mutationFn: (data: IUser) =>
+			userService.updateUser(userProfile?._id || "", data),
 
 		onSettled: () => {
 			queryClient.refetchQueries({
-				queryKey: [QueryKeys.Users, userProfile._id],
+				queryKey: [QueryKeys.Users, userProfile?._id],
 			});
 		},
 		onSuccess: () => {
 			queryClient.refetchQueries({
-				queryKey: [QueryKeys.Users, userProfile._id],
+				queryKey: [QueryKeys.Users, userProfile?._id],
 			});
 			queryClient.invalidateQueries(QueryKeys.Users);
 			fetchProfile();
@@ -62,6 +63,10 @@ const EditUserDetails = () => {
 	const onSubmit = (data: IUser) => {
 		mutate(data);
 	};
+
+	useEffect(() => {
+		reset(data);
+	}, [data, reset]);
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -87,6 +92,7 @@ const EditUserDetails = () => {
 							placeholder="name"
 							className="col-span-3"
 							{...register("username")}
+							disabled
 						/>
 					</div>
 
@@ -115,7 +121,7 @@ const EditUserDetails = () => {
 				</div>
 				<DialogFooter>
 					<Button onClick={handleSubmit(onSubmit)}>
-						{isLoading == false ? <InfiniteLoader /> : "Save changes"}
+						{isLoading ? <InfiniteLoader /> : "Save changes"}
 					</Button>
 				</DialogFooter>
 				<DialogClose ref={dialogCloseRef} />

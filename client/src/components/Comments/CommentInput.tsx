@@ -1,28 +1,39 @@
-import axiosInstance from "@/utils/axios";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router";
 import InfiniteProgressBar from "../InfiniteProgressBar";
 import { Label } from "../Label";
 import TextArea from "antd/es/input/TextArea";
 import { Button } from "../Button";
+import commentService from "@/service/comment.service";
+import { QueryKeys } from "@/constants/QueryKeys";
 
 const CommentInput = () => {
 	const { blogId } = useParams();
-	const { register, handleSubmit } = useForm();
+	const { handleSubmit, control, reset } = useForm<ICreateComment>();
 	const queryClient = useQueryClient();
 
 	//   mutation function to submit user comment
 	const { mutate, isLoading } = useMutation({
-		mutationFn: (data) =>
-			axiosInstance("post", `/blogs/${blogId}/comments`, data),
+		mutationFn: (data: ICreateComment) => commentService.addComment(data),
 
-		onSuccess: () => {},
+		onSuccess: () => {
+			queryClient.refetchQueries({
+				queryKey: [QueryKeys.Comments],
+			});
+			queryClient.refetchQueries({
+				queryKey: [QueryKeys.Blogs],
+			});
+			reset();
+		},
 	});
 
 	//   function to submit comments
-	const onSubmit = (data: any) => {
-		mutate(data);
+	const onSubmit = (data: ICreateComment) => {
+		if (blogId && data.comment) {
+			const dataForAPi = { articleId: blogId, comment: data.comment };
+			mutate(dataForAPi);
+		}
 	};
 
 	return (
@@ -33,7 +44,11 @@ const CommentInput = () => {
 
 				<div className="flex gap-4">
 					<Label className="text-right">Comment</Label>
-					<TextArea name="comment" />
+					<Controller
+						control={control}
+						name="comment"
+						render={({ field }) => <TextArea {...field} />}
+					/>
 				</div>
 
 				<div className="text-right">

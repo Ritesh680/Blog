@@ -15,6 +15,22 @@ class UserService {
 					_id: new mongoose.Types.ObjectId(id),
 				},
 			},
+			{
+				$lookup: {
+					from: "users",
+					localField: "followers",
+					foreignField: "_id",
+					as: "followers",
+					pipeline: [
+						{
+							$project: {
+								username: 1,
+								email: 1,
+							},
+						},
+					],
+				},
+			},
 
 			{
 				$lookup: {
@@ -50,6 +66,7 @@ class UserService {
 					following: 1,
 					imagePath: 1,
 					description: 1,
+					tagsFollowing: 1,
 				},
 			},
 		]);
@@ -124,6 +141,23 @@ class UserService {
 			new: true,
 		});
 		return updatedUser;
+	}
+
+	async addUserFollowing(currentUserId: string, followUserId: string) {
+		const res = await this.user.findByIdAndUpdate(
+			currentUserId,
+			{ $addToSet: { following: followUserId } },
+			{ new: true }
+		);
+		return res;
+	}
+	async removeUserFollowing(currentUserId: string, followUserId: string) {
+		const res = await this.user.findByIdAndUpdate(
+			currentUserId,
+			{ $pull: { following: followUserId } },
+			{ new: true }
+		);
+		return res;
 	}
 }
 

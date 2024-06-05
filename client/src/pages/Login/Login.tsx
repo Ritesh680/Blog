@@ -36,12 +36,12 @@ const Login = () => {
 
 	const { mutate, isLoading } = useMutation({
 		mutationFn: (data: Login) => authService.login(data),
-		onSuccess: (res) => {
-			navigate("/dashboard");
+		onSuccess: async (res) => {
 			localStorage.setItem("token", res.data.data.token);
-
-			fetchProfile();
 			setIsAuthenticated(true);
+
+			await fetchProfile();
+			navigate("/dashboard");
 		},
 		onError: (error: { message: string }) => {
 			setApiError(error.message);

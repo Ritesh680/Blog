@@ -12,6 +12,8 @@ import BlogDetailPage from "./pages/BlogDetailPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import Register from "./pages/Register";
 import CreateorEdit_Blog from "./pages/CreateBlog";
+import AllTopics from "./pages/Tags/AllTopics";
+import TagDetailPage from "./pages/Tags/TagDetails";
 
 function App() {
 	return (
@@ -23,6 +25,8 @@ function App() {
 					<Route path="register" element={<Register />} />
 					<Route path="create-blog" element={<CreateorEdit_Blog />} />
 					<Route path="edit-blog/:blogId" element={<CreateorEdit_Blog />} />
+					<Route path="tags" element={<AllTopics />} />
+					<Route path="tags/:tagId" element={<TagDetailPage />} />
 					<Route path="dashboard" element={<HomePage />}>
 						<Route path="" element={<CheckAuthAndRender />} />,
 					</Route>

@@ -25,6 +25,15 @@ class CategoryController {
 		new ApiResponse(res).success(result, "All Categories");
 	}
 
+	async getCategoryById(req: Request, res: Response, next: NextFunction) {
+		const id = req.params.id;
+		const result = await categoryService.getArticlesByCategoryId(id);
+		if (!result) {
+			new ApiResponse(res).failed("category not found");
+		}
+		new ApiResponse(res).success(result, "category found");
+	}
+
 	async updateCategory(req: Request, res: Response, next: NextFunction) {
 		const id = req.params.id;
 		const { name } = req.body;

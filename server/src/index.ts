@@ -4,6 +4,8 @@ import db from "./db/connection";
 // your routes here
 import cors, { CorsOptions } from "cors";
 import Config from "./config/config";
+import User from "./auth/auth.model";
+import { usersData } from "./seeder";
 const config = Config(process.env.NODE_ENV);
 
 const app: Express = express();
@@ -17,10 +19,16 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
+db.once("open", async () => {
 	console.log(" ");
 	console.log("------> +++++ COnnected MongoDB server +++++ <------");
 	console.log(" ");
+
+	const userCount = await User.countDocuments();
+	if (userCount === 0) {
+		await User.insertMany(usersData);
+		console.log("Default user added");
+	}
 
 	app.use("/", require("./routes"));
 

@@ -34,6 +34,8 @@ class UserController {
 
 		const followUserId = req.params.id;
 		await userService.followUser(currentUserId, followUserId);
+
+		await userService.addUserFollowing(currentUserId, followUserId);
 		new ApiResponse(res).success(null, "User followed successfully");
 	}
 
@@ -43,6 +45,8 @@ class UserController {
 
 		const followUserId = req.params.id;
 		await userService.unfollowUser(currentUserId, followUserId);
+
+		await userService.removeUserFollowing(currentUserId, followUserId);
 		new ApiResponse(res).success(null, "User unfollowed successfully");
 	}
 

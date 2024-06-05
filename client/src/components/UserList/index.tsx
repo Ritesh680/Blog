@@ -25,7 +25,7 @@ const UserList = ({
 		mutationFn: (user: IUser) => userService.followUser(user._id),
 
 		onSuccess: async () => {
-			await queryClient.invalidateQueries([QueryKeys.Users, userProfile._id]);
+			await queryClient.invalidateQueries([QueryKeys.Users, userProfile?._id]);
 		},
 	});
 

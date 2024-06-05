@@ -1,8 +1,11 @@
 import express from "express";
-import articleController from "../article/article.controller";
+import tagController from "./tags.controller";
 const router = express.Router();
 
-router.get("/", articleController.getAllArticles);
-router.post("/", articleController.createArticle);
+router.get("/", tagController.getAllTags);
+router.get("/:id", tagController.getTagById);
+router.post("/", tagController.createTag);
+router.post("/:tagId/follower", tagController.addFollowers);
+router.delete("/:tagId/follower", tagController.removeFollower);
 
 module.exports = router;

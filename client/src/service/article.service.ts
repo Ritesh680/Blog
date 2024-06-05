@@ -22,10 +22,31 @@ class ArticleService {
 		return response.data;
 	}
 
+	async getArticlesByTagId(tagId: string) {
+		const response = await axiosInstance<ApiResponse<IArticle[]>>(
+			"get",
+			`/article/tag/${tagId}`
+		);
+		if (response instanceof Error) {
+			throw new Error(response.message);
+		}
+		return response.data;
+	}
+
 	async likeArticle(articleId: string) {
 		const response = await axiosInstance<ApiResponse<IArticle>>(
 			"post",
-			`/article/like/${articleId}`
+			`/article/${articleId}/like`
+		);
+		if (response instanceof Error) {
+			throw new Error(response.message);
+		}
+		return response.data;
+	}
+	async unlikeArticle(articleId: string) {
+		const response = await axiosInstance<ApiResponse<IArticle>>(
+			"delete",
+			`/article/${articleId}/like`
 		);
 		if (response instanceof Error) {
 			throw new Error(response.message);
@@ -43,8 +64,9 @@ class ArticleService {
 		}
 		return response.data;
 	}
+
 	async createArticle(data: ICreateArticle) {
-		const response = await axiosInstance<ApiResponse<ICreateArticle>>(
+		const response = await axiosInstance<ApiResponse<ICreateArticleResponse>>(
 			"post",
 			`/article`,
 			data,
@@ -59,8 +81,9 @@ class ArticleService {
 		}
 		return response.data;
 	}
+
 	async updateArticle(blogId: string, data: ICreateArticle) {
-		const response = await axiosInstance<ApiResponse<ICreateArticle>>(
+		const response = await axiosInstance<ApiResponse<ICreateArticleResponse>>(
 			"put",
 			`/article/${blogId}`,
 			data,

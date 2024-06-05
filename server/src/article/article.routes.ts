@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get("/", articleController.getAllArticles);
 router.get("/:id", articleController.getArticleById);
+router.get("/tag/:tagId", articleController.getArticlesByTagId);
 
 router.put(
 	"/:id",
@@ -24,9 +25,14 @@ router.delete(
 );
 
 router.post(
-	"/like",
+	"/:id/like",
 	authMiddleware.checkAuthenticated,
 	articleController.likeArticle
+);
+router.delete(
+	"/:id/like",
+	authMiddleware.checkAuthenticated,
+	articleController.unlikeArticle
 );
 
 router.post(
@@ -35,12 +41,6 @@ router.post(
 	fileUpload,
 	bodyValidator(articleDTO),
 	articleController.createArticle
-);
-
-router.post(
-	"/:id/comments",
-	authMiddleware.checkAuthenticated,
-	articleController.addComment
 );
 
 module.exports = router;

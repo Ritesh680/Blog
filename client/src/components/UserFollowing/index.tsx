@@ -20,8 +20,8 @@ const UserFollowing = () => {
 
 	// fetch logged in user's following
 	const currentUserFollowing = useQuery({
-		queryKey: ["UserFollowing", userProfile._id],
-		queryFn: () => userService.getUserFollowingById(userProfile._id!),
+		queryKey: ["UserFollowing", userProfile?._id],
+		queryFn: () => userService.getUserFollowingById(userProfile?._id || ""),
 		enabled: isAuthenticated,
 	});
 

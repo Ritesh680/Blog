@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import Tag from "../tags/tags.model";
 
 const ArticleSchema = new Schema({
 	title: String,
@@ -6,9 +7,8 @@ const ArticleSchema = new Schema({
 	content: String,
 	filesPath: [{ type: String, default: "" }],
 	tag: {
-		type: String,
-		enum: ["featured", "popular", "trending"],
-		default: "popular",
+		type: mongoose.Types.ObjectId,
+		ref: "Tag",
 	},
 	likes: [
 		{
@@ -19,7 +19,7 @@ const ArticleSchema = new Schema({
 	comments: [
 		{
 			type: mongoose.Types.ObjectId,
-			ref: "User",
+			ref: "Comment",
 		},
 	],
 	authorId: {
@@ -36,7 +36,23 @@ const ArticleSchema = new Schema({
 	},
 	viewsCount: { type: Number, default: 0 },
 });
+interface IUser extends Document {
+	name: string;
+	email: string;
+	tag?: mongoose.Types.ObjectId;
+}
 
+ArticleSchema.pre<IUser>("save", async function (next) {
+	if (!this.tag) {
+		let defaultTag = await Tag.findOne({ name: "popular" });
+		if (!defaultTag) {
+			defaultTag = new Tag({ name: "popular" });
+			await defaultTag.save();
+		}
+		this.tag = defaultTag._id;
+	}
+	next();
+});
 const Article = mongoose.model("Article", ArticleSchema);
 
 export default Article;

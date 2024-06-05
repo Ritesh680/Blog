@@ -17,8 +17,6 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 		filesPath,
 	} = data;
 
-	console.log({ data });
-
 	// function to format date
 	return (
 		<div className="rounded bg-black/10">
@@ -28,7 +26,7 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 					<img
 						src={`${import.meta.env.VITE_API_URL}/${filesPath?.[0]}`}
 						onError={(e: SyntheticEvent<HTMLImageElement>) =>
-							(e.currentTarget.src = "fallback.png")
+							(e.currentTarget.src = "/fallback.png")
 						}
 						alt="Description of the image"
 						className="object-cover w-full h-full rounded"
@@ -41,7 +39,7 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 					{tag && (
 						<div className="flex justify-start">
 							<span className="px-1 py-1 ">
-								<Badge tagId={tag}>{tag}</Badge>
+								<Badge tagId={tag?._id}>{tag?.name}</Badge>
 							</span>
 						</div>
 					)}
@@ -99,7 +97,7 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 									type="button"
 									className="flex items-center p-1 space-x-1.5">
 									<MessageOutlined className="w-5 h-5" />
-									<span>{comments.length}</span>
+									<span>{comments?.length}</span>
 								</button>
 
 								<button
@@ -107,7 +105,7 @@ const BlogCardHorizontal = ({ data }: { data: IArticle }) => {
 									className="flex items-center p-1 space-x-1.5">
 									{/* <ThumbsUp className="w-5 h-5" /> */}
 									<HeartOutlined />
-									<span>{likes.length}</span>
+									<span>{likes?.length}</span>
 								</button>
 							</div>
 						</div>

@@ -10,7 +10,7 @@ import { Label } from "@/components/Label";
 import { QueryKeys } from "@/constants/QueryKeys";
 
 import articleService from "@/service/article.service";
-import tagService, { ITags } from "@/service/tags.service";
+import tagService from "@/service/tags.service";
 import Editor from "@/components/Editor";
 import { useEffect } from "react";
 import { createFileFromUrl } from "../../utils/function";
@@ -39,16 +39,16 @@ const CreateorEdit_Blog = () => {
 	const { mutate, isLoading: isPending } = useMutation({
 		mutationFn: (newBlog: ICreateArticle) =>
 			articleService.createArticle(newBlog),
-		onSuccess: () => {
-			navigate("/blogs");
+		onSuccess: (res) => {
+			navigate(`/blogs/${res._id}`);
 		},
 	});
 
 	const updateBlog = useMutation({
 		mutationFn: (newBlog: ICreateArticle) =>
 			articleService.updateArticle(blogId!, newBlog),
-		onSuccess: () => {
-			navigate("/blogs");
+		onSuccess: (res) => {
+			navigate(`/blogs/${res._id}`);
 		},
 	});
 

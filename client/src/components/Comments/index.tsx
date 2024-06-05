@@ -10,11 +10,12 @@ import {
 } from "../Sheet";
 import CommentInput from "./CommentInput";
 import { CommentOutlined } from "@ant-design/icons";
+import CommentList from "./CommentsList";
 
 const Comment = () => {
 	const { authenticated: isAuthenticated } = useContext(UserContext);
 	return (
-		<Sheet variant="bottom">
+		<Sheet>
 			<SheetTrigger asChild>
 				<div>
 					<CommentOutlined className="w-5 h-5" />
@@ -30,7 +31,10 @@ const Comment = () => {
 					</div>
 				)}
 
-				<div className="mt-5 overflow-auto">{/* <CommentList /> */}</div>
+				<div className="mt-5 overflow-auto">
+					{/* <CommentList /> */}
+					<CommentList />
+				</div>
 				<SheetFooter></SheetFooter>
 			</SheetContent>
 		</Sheet>
