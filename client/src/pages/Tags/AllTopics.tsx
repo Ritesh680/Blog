@@ -2,6 +2,7 @@ import { Badge } from "@/Badge";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { Skeleton } from "@/components/Skeleton";
+import { QueryKeys } from "@/constants/QueryKeys";
 import tagService from "@/service/tags.service";
 import { useState } from "react";
 import { useQuery } from "react-query";
@@ -10,7 +11,7 @@ const AllTopics = () => {
 	const [search, setSearch] = useState("");
 
 	const { data, isLoading } = useQuery({
-		queryKey: ["tags"],
+		queryKey: [QueryKeys.Tags],
 		queryFn: () => tagService.getAllTags(),
 	});
 

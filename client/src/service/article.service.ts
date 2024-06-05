@@ -2,7 +2,7 @@ import axiosInstance from "@/utils/axios";
 
 class ArticleService {
 	async getArticles() {
-		const response = await axiosInstance<ApiResponse<IArticle[]>>(
+		const response = await axiosInstance<ApiResponse<ArticleList[]>>(
 			"get",
 			"/article"
 		);
@@ -12,7 +12,7 @@ class ArticleService {
 		return response.data;
 	}
 	async getArticleById(id: string) {
-		const response = await axiosInstance<ApiResponse<IArticle>>(
+		const response = await axiosInstance<ApiResponse<ArticleList>>(
 			"get",
 			`/article/${id}`
 		);
@@ -23,7 +23,7 @@ class ArticleService {
 	}
 
 	async getArticlesByTagId(tagId: string) {
-		const response = await axiosInstance<ApiResponse<IArticle[]>>(
+		const response = await axiosInstance<ApiResponse<ArticleList[]>>(
 			"get",
 			`/article/tag/${tagId}`
 		);
@@ -34,7 +34,7 @@ class ArticleService {
 	}
 
 	async likeArticle(articleId: string) {
-		const response = await axiosInstance<ApiResponse<IArticle>>(
+		const response = await axiosInstance<ApiResponse<ArticleList>>(
 			"post",
 			`/article/${articleId}/like`
 		);
@@ -44,7 +44,7 @@ class ArticleService {
 		return response.data;
 	}
 	async unlikeArticle(articleId: string) {
-		const response = await axiosInstance<ApiResponse<IArticle>>(
+		const response = await axiosInstance<ApiResponse<ArticleList>>(
 			"delete",
 			`/article/${articleId}/like`
 		);
@@ -55,7 +55,7 @@ class ArticleService {
 	}
 
 	async deleteArticle(articleId: string) {
-		const response = await axiosInstance<ApiResponse<IArticle>>(
+		const response = await axiosInstance<ApiResponse<ArticleList>>(
 			"delete",
 			`/article/${articleId}`
 		);

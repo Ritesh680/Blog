@@ -30,6 +30,16 @@ class TagService {
 								localField: "authorId",
 								foreignField: "_id",
 								as: "user",
+								pipeline: [
+									{ $unwind: "$imagePath" },
+									{
+										$project: {
+											username: 1,
+											imagePath: 1,
+											description: 1,
+										},
+									},
+								],
 							},
 						},
 						{
@@ -40,7 +50,16 @@ class TagService {
 								as: "tag",
 							},
 						},
+						{
+							$lookup: {
+								from: "comments",
+								localField: "_id",
+								foreignField: "articleId",
+								as: "comments",
+							},
+						},
 						{ $unwind: "$tag" },
+						{ $unwind: "$user" },
 					],
 				},
 			},
@@ -50,6 +69,16 @@ class TagService {
 					localField: "followers",
 					foreignField: "_id",
 					as: "followers",
+					pipeline: [
+						{ $unwind: "$imagePath" },
+						{
+							$project: {
+								username: 1,
+								imagePath: 1,
+								description: 1,
+							},
+						},
+					],
 				},
 			},
 		]);

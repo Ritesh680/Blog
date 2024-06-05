@@ -1,8 +1,8 @@
 import axiosInstance from "@/utils/axios";
 
 class TagService {
-	async getAllTags(): Promise<ApiResponse<ITags[]>> {
-		const res = await axiosInstance<ApiResponse<ITags[]>>("get", "/tags");
+	async getAllTags(): Promise<ApiResponse<TagList[]>> {
+		const res = await axiosInstance<ApiResponse<TagList[]>>("get", "/tags");
 		if (res instanceof Error) throw new Error("Error fetching tags");
 		return res;
 	}
@@ -17,7 +17,7 @@ class TagService {
 	}
 
 	async createTag(value: string) {
-		const res = await axiosInstance<ApiResponse<ITags>>("post", "/tags", {
+		const res = await axiosInstance<ApiResponse<TagList>>("post", "/tags", {
 			name: value,
 		});
 		if (res instanceof Error) throw new Error("Error creating tag");

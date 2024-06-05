@@ -5,35 +5,34 @@ declare global {
 		data: T;
 		message: string;
 	}
-	interface IUser {
+
+	interface UserList {
 		_id: string;
 		username: string;
-		description: string;
-		about: string;
-		followers: IUser[];
-		following: IUser[];
-		articles: IArticle[];
-		imagePath?: string[];
-		files?: File;
-		tagsFollowing: string[];
 		email: string;
+		imagePath: string;
+		description: string;
+		tagsFollowing: string[];
+		followers: UserList[];
+		following: UserList[];
 	}
 
-	interface IArticle {
+	interface ArticleList {
 		_id: string;
 		title: string;
-		content: string;
 		description: string;
-		authorId: string;
-		user: IUser[];
-		categoryId: string;
+		content: string;
+		user: UserList;
 		likes: string[];
 		comments: string[];
-		publicationDate: string;
-		picture: File;
-		updatedAt: string;
-		tag: ITags;
+		publicationDate: Date;
+		tag: TagList;
 		filesPath: string[];
+	}
+
+	interface TagList {
+		_id: string;
+		name: string;
 	}
 
 	interface ICreateArticle {
@@ -46,28 +45,11 @@ declare global {
 	interface ICreateArticleResponse extends ICreateArticle {
 		_id: string;
 	}
-	interface ITags {
-		name: string;
-		_id: string;
-		followers: IUser[];
-	}
 
-	interface ITagsWithArticles extends ITags {
-		articles: IArticle[];
+	interface ITagsWithArticles extends TagList {
+		articles: ArticleList[];
 		tagsFollowing: string[];
-	}
-
-	interface UserProfile {
-		_id: string;
-		username: string;
-		description: string;
-		about: string;
-		followers: IUser[];
-		following: IUser[];
-		articles: IArticle[];
-		imagePath?: string[];
-		email: string;
-		tagsFollowing: string[];
+		followers: UserList[];
 	}
 
 	interface ICreateComment {
@@ -77,7 +59,7 @@ declare global {
 
 	interface IComment {
 		_id: string;
-		user: IUser;
+		user: UserList;
 		articleId: string;
 		commentDate: Date;
 		comment: string;

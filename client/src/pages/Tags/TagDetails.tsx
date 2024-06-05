@@ -46,7 +46,7 @@ const TagDetailPage = () => {
 				tagId,
 			]);
 
-			queryClient.setQueryData<IUser | undefined>(
+			queryClient.setQueryData<UserList | undefined>(
 				[QueryKeys.Users, userProfile?._id],
 				(prev) => {
 					if (prev) {
@@ -91,7 +91,7 @@ const TagDetailPage = () => {
 		mutationFn: () => tagService.removeFollower(tagId!),
 		onMutate: () => {
 			// Optimistically update the local cache for both user and tag
-			const previousUserData = queryClient.getQueryData<ApiResponse<IUser>>([
+			const previousUserData = queryClient.getQueryData<ApiResponse<UserList>>([
 				QueryKeys.Users,
 				userProfile?._id,
 			]);
@@ -100,7 +100,7 @@ const TagDetailPage = () => {
 				tagId,
 			]);
 
-			queryClient.setQueryData<IUser | undefined>(
+			queryClient.setQueryData<UserList | undefined>(
 				[QueryKeys.Users, userProfile?._id],
 				(prev) => {
 					if (prev) {

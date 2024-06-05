@@ -2,18 +2,21 @@ import axiosInstance from "@/utils/axios";
 
 class UserService {
 	async getAllUsers() {
-		const res = await axiosInstance<ApiResponse<IUser[]>>("get", "/users");
+		const res = await axiosInstance<ApiResponse<UserList[]>>("get", "/users");
 		if (res instanceof Error) throw Error("Something went wrong");
 
 		return res.data;
 	}
 	async getUserById(id: string) {
-		const res = await axiosInstance<ApiResponse<IUser>>("get", `/users/${id}`);
+		const res = await axiosInstance<ApiResponse<UserList>>(
+			"get",
+			`/users/${id}`
+		);
 		if (res instanceof Error) throw Error("Something went wrong");
 		return res.data;
 	}
 	async getUserFollowerById(id: string) {
-		const res = await axiosInstance<ApiResponse<IUser[]>>(
+		const res = await axiosInstance<ApiResponse<UserList[]>>(
 			"get",
 			`/users/${id}/followers`
 		);
@@ -21,7 +24,7 @@ class UserService {
 		return res.data;
 	}
 	async getUserFollowingById(id: string) {
-		const res = await axiosInstance<ApiResponse<IUser[]>>(
+		const res = await axiosInstance<ApiResponse<UserList[]>>(
 			"get",
 			`/users/${id}/following`
 		);
@@ -29,8 +32,8 @@ class UserService {
 		return res.data;
 	}
 
-	async updateUser(id: string, data: IUser) {
-		const res = await axiosInstance<ApiResponse<IUser>>(
+	async updateUser(id: string, data: UserList) {
+		const res = await axiosInstance<ApiResponse<UserList>>(
 			"put",
 			`/users/${id}`,
 			data,
@@ -45,7 +48,7 @@ class UserService {
 	}
 
 	async unfollowUser(id: string) {
-		const res = await axiosInstance<ApiResponse<IUser>>(
+		const res = await axiosInstance<ApiResponse<UserList>>(
 			"delete",
 			`/users/${id}/unfollow`
 		);
@@ -53,7 +56,7 @@ class UserService {
 		return res.data;
 	}
 	async followUser(id: string) {
-		const res = await axiosInstance<ApiResponse<IUser>>(
+		const res = await axiosInstance<ApiResponse<UserList>>(
 			"POST",
 			`/users/${id}/follow`
 		);
