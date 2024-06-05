@@ -6,11 +6,11 @@ import { QueryObserverResult, RefetchOptions, useQuery } from "react-query";
 interface UserContextProps {
 	authenticated: boolean;
 	setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-	userProfile: UserProfile | undefined;
-	setUserProfile: React.Dispatch<React.SetStateAction<UserProfile | undefined>>;
+	userProfile: UserList | undefined;
+	setUserProfile: React.Dispatch<React.SetStateAction<UserList | undefined>>;
 	fetchProfile: (
 		options?: RefetchOptions | undefined
-	) => Promise<QueryObserverResult<IUser[], unknown>>;
+	) => Promise<QueryObserverResult<UserList[], unknown>>;
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -19,11 +19,11 @@ export const UserContext = createContext<UserContextProps>({
 	userProfile: undefined,
 	setUserProfile: () => {},
 	fetchProfile: () =>
-		Promise.resolve({} as QueryObserverResult<IUser[], unknown>),
+		Promise.resolve({} as QueryObserverResult<UserList[], unknown>),
 });
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
-	const [userProfile, setUserProfile] = useState<UserProfile>();
+	const [userProfile, setUserProfile] = useState<UserList>();
 	const [authenticated, setIsAuthenticated] = useState(
 		localStorage.getItem("token") ? true : false
 	);

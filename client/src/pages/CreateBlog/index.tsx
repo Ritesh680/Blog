@@ -147,7 +147,7 @@ const CreateorEdit_Blog = () => {
 					<div className="grid gap-1.5">
 						<Label>Tag</Label>
 						<div className="max-w-sm">
-							<AsyncCreatable<ApiResponse<ITags[]>, ITags, ICreateArticle>
+							<AsyncCreatable<ApiResponse<TagList[]>, TagList, ICreateArticle>
 								queryKey={QueryKeys.Tags}
 								queryFunction={tagService.getAllTags}
 								control={control}

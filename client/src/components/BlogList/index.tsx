@@ -1,6 +1,6 @@
 import BlogCardHorizontal from "../BlogCardHorizontal";
 
-const BlogList = ({ data }: { data: IArticle[] }) => {
+const BlogList = ({ data }: { data: ArticleList[] }) => {
 	if (data?.length === 0)
 		return (
 			<div className="flex gap-2 text-xl underline cursor-default">

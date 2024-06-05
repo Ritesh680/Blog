@@ -24,7 +24,10 @@ class ArticleService {
 					localField: "authorId",
 					foreignField: "_id",
 					as: "user",
-					pipeline: [{ $project: { _id: 1, username: 1, imagePath: 1 } }],
+					pipeline: [
+						{ $unwind: "$imagePath" },
+						{ $project: { _id: 1, username: 1, imagePath: 1 } },
+					],
 				},
 			},
 			{
@@ -33,10 +36,29 @@ class ArticleService {
 					localField: "tag",
 					foreignField: "_id",
 					as: "tag",
+					pipeline: [{ $project: { _id: 1, name: 1 } }],
 				},
 			},
 			{ $unwind: "$tag" },
+			{ $unwind: "$user" },
 		]);
+	}
+
+	async getArticlesByUserId(userId: string) {
+		const res = await this.article.find({ authorId: userId });
+		//get articles id
+		const articlesId = res.map((article) => article._id);
+
+		//get article details
+
+		const articleDetails = await Promise.all(
+			articlesId.map(async (articleId) => {
+				const details = await this.getArticleById(articleId.toString());
+				return details;
+			})
+		);
+
+		return articleDetails;
 	}
 	async getArticleById(id: string) {
 		const res = await this.article.aggregate([
@@ -52,6 +74,7 @@ class ArticleService {
 					foreignField: "_id",
 					as: "user",
 					pipeline: [
+						{ $unwind: "$imagePath" },
 						{
 							$project: {
 								_id: 1,
@@ -84,12 +107,17 @@ class ArticleService {
 								localField: "userId",
 								foreignField: "_id",
 								as: "user",
+								pipeline: [
+									{ $unwind: "$imagePath" },
+									{ $project: { _id: 1, username: 1, imagePath: 1 } },
+								],
 							},
 						},
 						{ $unwind: "$user" },
 					],
 				},
 			},
+			{ $unwind: "$user" },
 		]);
 		return res[0];
 	}

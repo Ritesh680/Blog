@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import userService from "./user.service";
 import ApiResponse from "../middleware/response";
 import { decodeToken } from "../utils/functions";
+import articleService from "../article/article.service";
 
 class UserController {
 	async getAllUsers(req: Request, res: Response) {
@@ -20,8 +21,10 @@ class UserController {
 		const userDetails = await userService.getUserDetails(userId);
 		const followers = await userService.getUserFollowers(userId);
 		const following = await userService.getUserFollowing(userId);
+		const articles = await articleService.getArticlesByUserId(userId);
 		userDetails.followers = followers;
 		userDetails.following = following;
+		userDetails.articles = articles;
 		new ApiResponse(res).success(
 			userDetails,
 			"User details fetched successfully"

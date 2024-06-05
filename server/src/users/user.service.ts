@@ -5,7 +5,17 @@ class UserService {
 	user = User;
 
 	getUsers() {
-		return this.user.find();
+		return this.user.aggregate([
+			{ $unwind: "$imagePath" },
+			{
+				$project: {
+					_id: 1,
+					username: 1,
+					email: 1,
+					imagePath: 1,
+				},
+			},
+		]);
 	}
 
 	async getUserDetails(id: string) {
@@ -26,29 +36,6 @@ class UserService {
 							$project: {
 								username: 1,
 								email: 1,
-							},
-						},
-					],
-				},
-			},
-
-			{
-				$lookup: {
-					from: "articles",
-					localField: "_id",
-					foreignField: "authorId",
-					as: "articles",
-					pipeline: [
-						{
-							$project: {
-								title: 1,
-								content: 1,
-								publicationDate: {
-									$dateToString: {
-										format: "%Y-%m-%d",
-										date: "$publicationDate",
-									},
-								},
 							},
 						},
 					],

@@ -11,8 +11,8 @@ const UserList = ({
 	profileUser,
 	currentUser,
 }: {
-	profileUser: IUser[];
-	currentUser: IUser[];
+	profileUser: UserList[];
+	currentUser: UserList[];
 }) => {
 	// const location = useLocation();
 	const { authenticated: isAuthenticated, userProfile } =
@@ -22,7 +22,7 @@ const UserList = ({
 
 	// mutation function to follow user
 	const followUser = useMutation({
-		mutationFn: (user: IUser) => userService.followUser(user._id),
+		mutationFn: (user: UserList) => userService.followUser(user._id),
 
 		onSuccess: async () => {
 			await queryClient.invalidateQueries([QueryKeys.Users, userProfile?._id]);
@@ -31,7 +31,7 @@ const UserList = ({
 
 	// mutation function to unfollow user
 	const unFollowUser = useMutation({
-		mutationFn: (user: IUser) => userService.unfollowUser(user._id),
+		mutationFn: (user: UserList) => userService.unfollowUser(user._id),
 
 		onSettled: async () => {
 			await queryClient.refetchQueries([QueryKeys.Followers]);
@@ -41,12 +41,12 @@ const UserList = ({
 	});
 
 	// function to handle user unfollow
-	const handleUnfollow = (user: IUser) => {
+	const handleUnfollow = (user: UserList) => {
 		if (isAuthenticated) followUser.mutate(user);
 	};
 
 	// function to handle user follow
-	const handleFollow = (user: IUser) => {
+	const handleFollow = (user: UserList) => {
 		if (isAuthenticated) unFollowUser.mutate(user);
 	};
 
@@ -54,7 +54,7 @@ const UserList = ({
 		return currentUser.some((user) => user._id === userId);
 	};
 
-	const renderFollowButton = (user: IUser) => {
+	const renderFollowButton = (user: UserList) => {
 		if (user?._id === userProfile?._id) {
 			return <div className="text-sm font-bold ">You</div>;
 		}
