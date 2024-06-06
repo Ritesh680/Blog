@@ -53,7 +53,7 @@ const Register = () => {
 			{isPending && <InfiniteProgressBar />}
 			<div className="flex flex-col items-center justify-center w-screen h-[100vh] top-0 absolute transition-all duration-200">
 				<p className="text-3xl font-medium text-center md:text-5xl">
-					Join BlogBreeze
+					Join Ritesh
 				</p>
 				<Card className="w-[400px] m-5 bg-black/10 backdrop-blur">
 					<CardHeader>
@@ -168,8 +168,8 @@ const Register = () => {
 					</form>
 				</Card>
 				<div className="mx-5 text-center text-muted-foreground">
-					Click “Sign up” to agree to BlogBreeze’s Terms of Service and
-					acknowledge that BlogBreeze’s Privacy Policy applies to you.
+					Click “Sign up” to agree to Ritesh's Terms of Service and acknowledge
+					that Ritesh’s Privacy Policy applies to you.
 				</div>
 			</div>
 		</>

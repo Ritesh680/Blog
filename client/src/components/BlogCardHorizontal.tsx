@@ -29,7 +29,7 @@ const BlogCardHorizontal = ({ data }: { data: ArticleList }) => {
 							(e.currentTarget.src = "/fallback.png")
 						}
 						alt="Description of the image"
-						className="object-cover w-full h-full rounded"
+						className="object-cover w-80 h-80 rounded"
 					/>
 				</div>
 

@@ -109,7 +109,7 @@ const Navbar = () => {
 						<Link
 							className="text-3xl font-semibold tracking-wide cursor-pointer"
 							to="/">
-							BlogBreeze
+							Ritesh
 						</Link>
 						<div className="hidden cursor-text sm:block">
 							<SearchBar />
